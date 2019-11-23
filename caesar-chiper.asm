@@ -18,6 +18,10 @@
 ;====================================================================
 .org $00
 	rjmp INIT_STACK
+.org $01
+	rjmp ext_int0
+.org $02
+	rjmp ext_int1
 
 ;====================================================================
 ; CODE SEGMENT
@@ -29,7 +33,9 @@ INIT_STACK:
 	out	SPH,stack
 
 Main:
+	rcall INIT_INTERRUPT
 	rcall INIT
+	rcall INPUT_TEXT
 	;;Write code here
 	
 
@@ -40,6 +46,15 @@ INIT:
 	rcall INIT_LED
 	rcall INIT_LCD_MAIN
 	ret
+
+INIT_INTERRUPT:
+	ldi temp,0b00001010
+	out MCUCR,temp
+	ldi temp,0b11000000
+	out GICR,temp
+	sei
+	ret
+
 
 INIT_LED:
 	ser temp ; load $FF to temp
@@ -71,7 +86,17 @@ LOADBYTE:
 	adiw ZL,1 ; Increase Z registers
 	rjmp LOADBYTE
 
+BAWAH:
+	cbi PORTA, 1
+	ldi PB, 192 ; set DDRAM address to 192 for second row
+	out PORTB, PB
+	sbi PORTA, 0 ; SETB EN
+	cbi PORTA, 0 ; CLR EN
+	rcall DELAY_01
+	ret
+
 END_LCD:
+	rcall BAWAH ; ubah cursor ke bawah untuk input kata
 	ret
 
 INIT_LCD:
@@ -107,6 +132,16 @@ CLEAR_LCD:
 	cbi PORTA,0 ; CLR EN
 	rcall DELAY_01
 	ret
+
+ext_int0:
+	ldi A, $41
+	rcall WRITE_TEXT
+	reti
+
+ext_int1:
+	ldi A, $42
+	rcall WRITE_TEXT
+	reti
 
 WRITE_TEXT:
 	sbi PORTA,1 ; SETB RS

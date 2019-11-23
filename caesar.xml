@@ -3,10 +3,10 @@
    <General>
       <Build>2005</Build>
       <Position>
-         <top>81</top>
-         <bottom>734</bottom>
-         <left>463</left>
-         <right>1157</right>
+         <top>173</top>
+         <bottom>588</bottom>
+         <left>460</left>
+         <right>1155</right>
       </Position>
       <StayOnTop>1</StayOnTop>
       <Target>ATmega8515</Target>
@@ -55,7 +55,7 @@
             <Name>End Input</Name>
             <PortPin>
                <Port>PORTD</Port>
-               <Bit>4</Bit>
+               <Bit>2</Bit>
             </PortPin>
             <Invert>0</Invert>
          </Config>
@@ -63,7 +63,7 @@
             <Name>Reset</Name>
             <PortPin>
                <Port>PORTD</Port>
-               <Bit>5</Bit>
+               <Bit>3</Bit>
             </PortPin>
             <Invert>0</Invert>
          </Config>
@@ -165,25 +165,6 @@
             <Invert>0</Invert>
          </Config>
       </LEDs>
-      <Terminal>
-         <Name>Copy to Clipboard</Name>
-         <Position>
-            <top>300</top>
-            <left>19</left>
-            <width>484</width>
-            <height>246</height>
-         </Position>
-         <Interface>USART</Interface>
-         <localEcho>0</localEcho>
-         <redirectEnable>0</redirectEnable>
-         <Redirection>
-            <Port>n/a</Port>
-            <Baudrate>1200</Baudrate>
-            <Parity>None</Parity>
-            <Stopbits>1</Stopbits>
-            <Flowcontrol>None</Flowcontrol>
-         </Redirection>
-      </Terminal>
       <Keypad>
          <Name>Keypad1</Name>
          <Position>
