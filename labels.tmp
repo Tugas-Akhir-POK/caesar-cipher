@@ -19,24 +19,26 @@
   <FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.map</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <INIT_STACK><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>29</LINE></INIT_STACK>
-  <ext_int0><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>136</LINE></ext_int0>
-  <ext_int1><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>141</LINE></ext_int1>
-  <Main><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>35</LINE></Main>
-  <INIT_INTERRUPT><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>50</LINE></INIT_INTERRUPT>
-  <INIT><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>45</LINE></INIT>
-  <INPUT_TEXT><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>64</LINE></INPUT_TEXT>
-  <forever><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>42</LINE></forever>
-  <INIT_LED><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>59</LINE></INIT_LED>
-  <INIT_LCD_MAIN><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>69</LINE></INIT_LCD_MAIN>
-  <message><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>175</LINE></message>
-  <INIT_LCD><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>102</LINE></INIT_LCD>
-  <LOADBYTE><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>78</LINE></LOADBYTE>
-  <END_LCD><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>98</LINE></END_LCD>
-  <WRITE_TEXT><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>146</LINE></WRITE_TEXT>
-  <BAWAH><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>89</LINE></BAWAH>
-  <DELAY_01><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>154</LINE></DELAY_01>
-  <CLEAR_LCD><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>127</LINE></CLEAR_LCD>
-  <L1><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>163</LINE></L1>
+  <INIT_STACK><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>33</LINE></INIT_STACK>
+  <GANTI_HURUF><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>158</LINE></GANTI_HURUF>
+  <LANJUT><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>173</LINE></LANJUT>
+  <Main><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>39</LINE></Main>
+  <INIT_INTERRUPT><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>65</LINE></INIT_INTERRUPT>
+  <INIT><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>60</LINE></INIT>
+  <INPUT_TEXT><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>79</LINE></INPUT_TEXT>
+  <WRITE_TEXT><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>198</LINE></WRITE_TEXT>
+  <DELAY_02><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>222</LINE></DELAY_02>
+  <forever><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>57</LINE></forever>
+  <INIT_LED><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>74</LINE></INIT_LED>
+  <INIT_LCD_MAIN><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>84</LINE></INIT_LCD_MAIN>
+  <message><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>238</LINE></message>
+  <INIT_LCD><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>124</LINE></INIT_LCD>
+  <LOADBYTE><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>93</LINE></LOADBYTE>
+  <END_LCD><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>120</LINE></END_LCD>
+  <BAWAH><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>104</LINE></BAWAH>
+  <DELAY_01><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>206</LINE></DELAY_01>
+  <SIMPAN_STACK><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>113</LINE></SIMPAN_STACK>
+  <CLEAR_LCD><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>149</LINE></CLEAR_LCD>
+  <L1><FILE>C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm</FILE><LINE>215</LINE></L1>
  </LABELS>
 </ASSEMBLER_INFO>
