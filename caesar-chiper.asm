@@ -32,7 +32,7 @@
 ;====================================================================
 INIT_STACK:
 	ldi	stack,low(RAMEND)
-	out	SPL,stack	            ;init Stack Pointer		
+	out	SPL,stack	            ;init Stack Pointer
 	ldi stack,high(RAMEND)
 	out	SPH,stack
 
@@ -159,6 +159,11 @@ GANTI_HURUF:
 	;; ambil current word dan ditambah 1
 	ldi temp, 1
 	add current_word, temp
+	
+	mov temp, current_word
+	cpi temp, $5B
+	breq HURUF_A
+	LOLOS:
 	mov A, current_word
 	rcall WRITE_TEXT
 
@@ -169,6 +174,11 @@ GANTI_HURUF:
 	cbi PORTA, 0 ; CLR EN
 
 	reti
+
+HURUF_A:
+	ldi temp, $41
+	mov current_word, temp
+	rjmp LOLOS
 
 LANJUT:
 	mov A, current_word
