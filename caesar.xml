@@ -5,7 +5,7 @@
       <Position>
          <top>99</top>
          <bottom>508</bottom>
-         <left>1010</left>
+         <left>822</left>
          <right>1362</right>
       </Position>
       <StayOnTop>1</StayOnTop>
@@ -19,7 +19,7 @@
             <left>17</left>
          </Position>
          <DisplayConfig>
-            <columns>16</columns>
+            <columns>40</columns>
             <rows>2</rows>
             <bkColor>0xc1fa9d</bkColor>
             <size>2</size>
