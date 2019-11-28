@@ -1,2 +1,0 @@
-@ECHO OFF
-"C:\Program Files (x86)\Atmel\AVR Tools\AvrAssembler2\avrasm2.exe" -S "C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\labels.tmp" -fI -W+ie -o "C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.hex" -d "C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.obj" -e "C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.eep" -m "C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.map" "C:\Users\acer\Documents\TERM 3\POK\caesar-chiper\caesar-chiper.asm"
