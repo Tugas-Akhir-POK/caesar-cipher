@@ -3,10 +3,10 @@
    <General>
       <Build>2005</Build>
       <Position>
-         <top>99</top>
-         <bottom>508</bottom>
-         <left>822</left>
-         <right>1362</right>
+         <top>93</top>
+         <bottom>502</bottom>
+         <left>1009</left>
+         <right>1549</right>
       </Position>
       <StayOnTop>1</StayOnTop>
       <Target>ATmega8515</Target>
@@ -71,7 +71,7 @@
             <Name>Shift +1</Name>
             <PortPin>
                <Port>PORTD</Port>
-               <Bit>6</Bit>
+               <Bit>4</Bit>
             </PortPin>
             <Invert>0</Invert>
          </Config>
@@ -79,7 +79,7 @@
             <Name>Shift -1</Name>
             <PortPin>
                <Port>PORTD</Port>
-               <Bit>7</Bit>
+               <Bit>5</Bit>
             </PortPin>
             <Invert>0</Invert>
          </Config>

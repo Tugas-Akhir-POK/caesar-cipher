@@ -22,10 +22,6 @@
 ;====================================================================
 .org $00
 	rjmp INIT_STACK
-.org $01
-	rjmp GANTI_HURUF ; ganti huruf a,b,c,d,...
-.org $02
-	rjmp LANJUT ; lanjut a,ak,aku
 
 ;====================================================================
 ; CODE SEGMENT
@@ -55,6 +51,19 @@ Main:
 
 
 forever:
+	; PIND is listening to PORTD (Button)
+	sbic PIND, 2 ; skip next ins if bit 2 is 0
+	rjmp GANTI_HURUF ; bit 2 should be 1
+
+	sbic PIND, 3 ; skip next ins if bit 3 is 0
+	rjmp LANJUT ; bit 3 should be 1
+
+	sbic PIND, 4 ; skip next ins if bit 4 is 0
+	rjmp SHIFT_KANAN ; bit 4 should be 1
+
+	sbic PIND, 5 ; skip next ins if bit 5 is 0
+	rjmp SHIFT_KIRI ; bit 5 should be 1
+
 	rjmp forever
 
 INIT:
@@ -63,11 +72,11 @@ INIT:
 	ret
 
 INIT_INTERRUPT:
-	ldi temp,0b00001010
-	out MCUCR,temp
-	ldi temp,0b11000000
-	out GICR,temp
-	sei
+	;ldi temp,0b00000010
+	;out MCUCR,temp
+	;ldi temp,0b01000000
+	;out GICR,temp
+	;sei
 	ret
 
 
@@ -155,6 +164,21 @@ CLEAR_LCD:
 	rcall DELAY_01
 	ret
 
+SHIFT_KIRI:
+	ldi A, $42
+	rcall WRITE_TEXT
+
+	rcall DELAY_01
+	rjmp forever
+
+SHIFT_KANAN:
+	ldi A, $43
+	rcall WRITE_TEXT
+
+	rcall DELAY_01
+	rjmp forever
+
+
 GANTI_HURUF:
 	;; ambil current word dan ditambah 1
 	ldi temp, 1
@@ -162,7 +186,11 @@ GANTI_HURUF:
 	
 	mov temp, current_word
 	cpi temp, $5B
-	breq HURUF_A
+	brne LOLOS
+	
+	ldi temp, $41
+	mov current_word, temp
+	
 	LOLOS:
 	mov A, current_word
 	rcall WRITE_TEXT
@@ -172,13 +200,9 @@ GANTI_HURUF:
 	out PORTB, PB
 	sbi PORTA, 0 ; SETB EN
 	cbi PORTA, 0 ; CLR EN
+	rcall DELAY_01
+	rjmp forever
 
-	reti
-
-HURUF_A:
-	ldi temp, $41
-	mov current_word, temp
-	rjmp LOLOS
 
 LANJUT:
 	mov A, current_word
@@ -203,7 +227,8 @@ LANJUT:
 	sbi PORTA, 0 ; SETB EN
 	cbi PORTA, 0 ; CLR EN
 
-	reti
+	rcall DELAY_01
+	rjmp forever
 
 WRITE_TEXT:
 	sbi PORTA,1 ; SETB RS
