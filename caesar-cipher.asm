@@ -16,12 +16,17 @@
 .def EW = r23 ; for PORTA
 .def PB = r24 ; for PORTB
 .def A  = r25 ; kalo mau nge print
+.def counter = r20
+.def pattern = r15
+
 
 ;====================================================================
 ; RESET and INTERRUPT VECTORS
 ;====================================================================
 .org $00
 	rjmp INIT_STACK
+.org $07
+	rjmp ISR_TOV0
 
 ;====================================================================
 ; CODE SEGMENT

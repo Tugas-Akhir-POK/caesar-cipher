@@ -3,10 +3,10 @@
    <General>
       <Build>2005</Build>
       <Position>
-         <top>93</top>
-         <bottom>502</bottom>
-         <left>1009</left>
-         <right>1549</right>
+         <top>118</top>
+         <bottom>527</bottom>
+         <left>865</left>
+         <right>1405</right>
       </Position>
       <StayOnTop>1</StayOnTop>
       <Target>ATmega8515</Target>
@@ -93,74 +93,74 @@
             <left>18</left>
          </Position>
          <Config index="0">
-            <Color>Red</Color>
-            <Name>LED0</Name>
+            <Color>Green</Color>
+            <Name>8</Name>
             <PortPin>
                <Port>PORTC</Port>
-               <Bit>0</Bit>
+               <Bit>7</Bit>
             </PortPin>
             <Invert>0</Invert>
          </Config>
          <Config index="1">
-            <Color>Red</Color>
-            <Name>LED1</Name>
-            <PortPin>
-               <Port>PORTC</Port>
-               <Bit>1</Bit>
-            </PortPin>
-            <Invert>0</Invert>
-         </Config>
-         <Config index="2">
-            <Color>Red</Color>
-            <Name>LED2</Name>
-            <PortPin>
-               <Port>PORTC</Port>
-               <Bit>2</Bit>
-            </PortPin>
-            <Invert>0</Invert>
-         </Config>
-         <Config index="3">
-            <Color>Red</Color>
-            <Name>LED3</Name>
-            <PortPin>
-               <Port>PORTC</Port>
-               <Bit>3</Bit>
-            </PortPin>
-            <Invert>0</Invert>
-         </Config>
-         <Config index="4">
-            <Color>Red</Color>
-            <Name>LED4</Name>
-            <PortPin>
-               <Port>PORTC</Port>
-               <Bit>4</Bit>
-            </PortPin>
-            <Invert>0</Invert>
-         </Config>
-         <Config index="5">
-            <Color>Red</Color>
-            <Name>LED5</Name>
-            <PortPin>
-               <Port>PORTC</Port>
-               <Bit>5</Bit>
-            </PortPin>
-            <Invert>0</Invert>
-         </Config>
-         <Config index="6">
-            <Color>Red</Color>
-            <Name>LED6</Name>
+            <Color>Green</Color>
+            <Name>7</Name>
             <PortPin>
                <Port>PORTC</Port>
                <Bit>6</Bit>
             </PortPin>
             <Invert>0</Invert>
          </Config>
-         <Config index="7">
-            <Color>Red</Color>
-            <Name>LED7</Name>
+         <Config index="2">
+            <Color>Green</Color>
+            <Name>6</Name>
             <PortPin>
                <Port>PORTC</Port>
-               <Bit>7</Bit>
+               <Bit>5</Bit>
+            </PortPin>
+            <Invert>0</Invert>
+         </Config>
+         <Config index="3">
+            <Color>Yellow</Color>
+            <Name>5</Name>
+            <PortPin>
+               <Port>PORTC</Port>
+               <Bit>4</Bit>
+            </PortPin>
+            <Invert>0</Invert>
+         </Config>
+         <Config index="4">
+            <Color>Yellow</Color>
+            <Name>4</Name>
+            <PortPin>
+               <Port>PORTC</Port>
+               <Bit>3</Bit>
+            </PortPin>
+            <Invert>0</Invert>
+         </Config>
+         <Config index="5">
+            <Color>Yellow</Color>
+            <Name>3</Name>
+            <PortPin>
+               <Port>PORTC</Port>
+               <Bit>2</Bit>
+            </PortPin>
+            <Invert>0</Invert>
+         </Config>
+         <Config index="6">
+            <Color>Red</Color>
+            <Name>2</Name>
+            <PortPin>
+               <Port>PORTC</Port>
+               <Bit>1</Bit>
+            </PortPin>
+            <Invert>0</Invert>
+         </Config>
+         <Config index="7">
+            <Color>Red</Color>
+            <Name>1</Name>
+            <PortPin>
+               <Port>PORTC</Port>
+               <Bit>0</Bit>
             </PortPin>
             <Invert>0</Invert>
          </Config>
