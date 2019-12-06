@@ -8,17 +8,16 @@
 ; DEFINITIONS
 ;====================================================================
 .def current_word = r1 ; buat nanti di get dari array untuk shift dll
-.def current_index = r2 ; simpan index untuk array
+.def adressarray = r2 ; simpan index untuk array
 .def temp = r16 ; temporary register
-.def shift = r17 ; shift berapa
+.def temp2 = r17 ;temp2
 .def stack = r21 ; stack
 .def current_ddram = r22 ; simpan nilai ddram untuk geser2 cursor
-.def EW = r23 ; for PORTA
+.def banyak_input = r23
 .def PB = r24 ; for PORTB
 .def A  = r25 ; kalo mau nge print
 .def counter = r20
-.def pattern = r15
-
+.def pattern = r26
 
 ;====================================================================
 ; RESET and INTERRUPT VECTORS
@@ -39,7 +38,7 @@ INIT_STACK:
 
 Main:
 	ldi current_ddram, $C0
-	rcall INIT_INTERRUPT
+	ldi banyak_input, $0
 	rcall INIT
 	rcall INPUT_TEXT
 	ldi A, $41 ; inisiasi input nya pertama adalah huruf A
@@ -53,9 +52,13 @@ Main:
 	out PORTB, PB
 	sbi PORTA, 0 ; SETB EN
 	cbi PORTA, 0 ; CLR EN
-
+	
+	rcall LOAD_ADDRESS_ARRAY
+	
 
 forever:
+	;ldi A, $41
+	;rcall WRITE_TEXT
 	; PIND is listening to PORTD (Button)
 	sbic PIND, 2 ; skip next ins if bit 2 is 0
 	rjmp GANTI_HURUF ; bit 2 should be 1
@@ -68,22 +71,14 @@ forever:
 
 	sbic PIND, 5 ; skip next ins if bit 5 is 0
 	rjmp SHIFT_KIRI ; bit 5 should be 1
-
+	
 	rjmp forever
 
 INIT:
 	rcall INIT_LED
 	rcall INIT_LCD_MAIN
+	rcall INIT_TIMER
 	ret
-
-INIT_INTERRUPT:
-	;ldi temp,0b00000010
-	;out MCUCR,temp
-	;ldi temp,0b01000000
-	;out GICR,temp
-	;sei
-	ret
-
 
 INIT_LED:
 	ser temp ; load $FF to temp
@@ -126,13 +121,31 @@ BAWAH:
 
 SIMPAN_STACK:
 	;; simpan ke stack
-	in XL, SPL
-	in XH, SPH
-	st X, A
-	ret
+	;in XL, SPL
+	;in XH, SPH
+	;st X, A
+	;ret
 
 END_LCD:
 	rcall BAWAH ; ubah cursor ke bawah untuk input kata
+	ret
+
+INIT_TIMER:
+	ldi counter, 8
+	ldi pattern, 0b11111111
+	ldi r16, (1<<CS10)||(1<<CS12) 
+	out TCCR1B,r16			
+	ldi r16,1<<TOV1
+	out TIFR,r16		; Interrupt if overflow occurs in T/C0
+	ldi r16,1<<TOIE1
+	out TIMSK,r16		; Enable Timer/Counter0 Overflow int
+	ldi r16, 0b11111111
+	out DDRC,r16		; Set port C as output
+	ldi r16, 0
+	out PORTC, r16
+	mov r16, pattern
+	out PORTC, r16
+	;sei
 	ret
 
 INIT_LCD:
@@ -169,7 +182,16 @@ CLEAR_LCD:
 	rcall DELAY_01
 	ret
 
+LOAD_ADDRESS_ARRAY:
+	ldi YH,high(2*array) ; Load high part of byte address into YH
+	ldi YL,low(2*array) ; Load low part of byte address into YL
+	ret
+
 SHIFT_KIRI:
+	rcall LOAD_ADDRESS_ARRAY
+	loop:
+		ld temp, Y
+		
 	ldi A, $42
 	rcall WRITE_TEXT
 
@@ -177,10 +199,35 @@ SHIFT_KIRI:
 	rjmp forever
 
 SHIFT_KANAN:
-	ldi A, $43
-	rcall WRITE_TEXT
+	ldi current_ddram, $C0
+	mov PB, current_ddram
+	cbi PORTA, 1
+	out PORTB, PB
+	sbi PORTA, 0 ; SETB EN
+	cbi PORTA, 0 ; CLR EN
 
-	rcall DELAY_01
+	rcall LOAD_ADDRESS_ARRAY
+	ldi temp2, 1
+	loop_kanan:
+		ld temp, Y		;load the char
+		subi temp, -1	;add ascii
+		mov A, temp		;prepare to write to LCD
+
+		cpi A, $5B		;check if its Z
+		brne LANJUT_LOOP_KANAN
+		ldi A, $41		;if Z, then print A
+
+		LANJUT_LOOP_KANAN:
+		rcall WRITE_TEXT
+		st Y+, A		;update char at memory
+		subi temp2, -1
+		
+		subi current_ddram, -1	
+		cp temp2, banyak_input	;cek udh berapa char yang ke shift
+		breq loop_kanan_beres
+		rjmp loop_kanan
+
+	loop_kanan_beres:
 	rjmp forever
 
 
@@ -196,7 +243,7 @@ GANTI_HURUF:
 	ldi temp, $41
 	mov current_word, temp
 	
-	LOLOS:
+LOLOS:
 	mov A, current_word
 	rcall WRITE_TEXT
 
@@ -208,13 +255,14 @@ GANTI_HURUF:
 	rcall DELAY_01
 	rjmp forever
 
-
 LANJUT:
 	mov A, current_word
-	rcall SIMPAN_STACK
+	st Y+, A		;Post increment store current char to memory
+	subi banyak_input, -1
+
+	;set next char
 	ldi A, $41
 	mov current_word, A
-
 	ldi temp, 1
 	add current_ddram, temp
 
@@ -231,7 +279,8 @@ LANJUT:
 	out PORTB, PB
 	sbi PORTA, 0 ; SETB EN
 	cbi PORTA, 0 ; CLR EN
-
+	
+	subi banyak_input, -1
 	rcall DELAY_01
 	rjmp forever
 
@@ -242,6 +291,115 @@ WRITE_TEXT:
 	cbi PORTA,0 ; CLR EN
 	rcall DELAY_01
 	ret
+
+ISR_TOV0:
+	dec counter
+	breq MAU_UBAH_PATTERN
+	rcall PILIH_KEDIP
+	ldi r22, 0
+	out TCNT0,r22
+	reti
+
+PILIH_KEDIP:
+	cpi pattern, 0b11111111
+	breq KEDIP8
+	cpi pattern, 0b01111111
+	breq KEDIP7
+	cpi pattern, 0b00111111
+	breq KEDIP6
+	cpi pattern, 0b00011111
+	breq KEDIP5
+	cpi pattern, 0b00001111
+	breq KEDIP4
+	cpi pattern, 0b00000111
+	breq KEDIP3
+	cpi pattern, 0b00000011
+	breq KEDIP2
+	cpi pattern, 0b00000001
+	breq KEDIP1
+	ret
+
+KEDIP8:
+	ldi r16, 0b01111111
+	out PORTC, r16
+	rcall DELAY_00
+	out PORTC, pattern
+	rcall DELAY_00
+	ret
+
+KEDIP7:
+	ldi r16, 0b00111111
+	out PORTC, r16
+	rcall DELAY_00
+	out PORTC, pattern
+	rcall DELAY_00
+	ret
+
+KEDIP6:
+	ldi r16, 0b00011111
+	out PORTC, r16
+	rcall DELAY_00
+	out PORTC, pattern
+	rcall DELAY_00
+	ret
+
+KEDIP5:
+	ldi r16, 0b00001111
+	out PORTC, r16
+	rcall DELAY_00
+	out PORTC, pattern
+	rcall DELAY_00
+	ret
+
+KEDIP4:
+	ldi r16, 0b00000111
+	out PORTC, r16
+	rcall DELAY_00
+	out PORTC, pattern
+	rcall DELAY_00
+	ret
+
+MAU_UBAH_PATTERN:
+	rjmp UBAH_PATTERN
+
+KEDIP3:
+	ldi r16, 0b00000011
+	out PORTC, r16
+	rcall DELAY_00
+	out PORTC, pattern
+	rcall DELAY_00
+	ret
+
+KEDIP2:
+	ldi r16, 0b00000001
+	out PORTC, r16
+	rcall DELAY_00
+	out PORTC, pattern
+	rcall DELAY_00
+	ret
+
+KEDIP1:
+	ldi r16, 0b00000000
+	out PORTC, r16
+	rcall DELAY_00
+	out PORTC, pattern
+	rcall DELAY_00
+	ret
+
+UBAH_PATTERN:
+	ldi counter, 8
+	push r16
+	in r16,SREG
+	push r16
+	lsr pattern		; ubah pattern
+	mov r16, pattern
+	out PORTC, r16
+	rcall DELAY_00
+	pop r16
+	out SREG,r16
+	pop r16
+	out TCNT0,r22
+	reti
 
 DELAY_01:
 	; Generated by delay loop calculator
@@ -259,6 +417,20 @@ DELAY_01:
 	    nop
 	ret
 
+DELAY_00:
+	; Generated by delay loop calculator
+	; at http://www.bretmulvey.com/avrdelay.html
+	;
+	; Delay 4 000 cycles
+	; 500us at 8.0 MHz
+	    ldi  r18, 208
+	    ldi  r19, 202
+	L0: dec  r19
+	    brne L0
+	    dec  r18
+	    brne L0
+	ret
+
 DELAY_02:
 	; Generated by delay loop calculator
 ; at http://www.bretmulvey.com/avrdelay.html
@@ -274,6 +446,8 @@ DELAY_02:
 ;====================================================================
 ; DATA
 ;====================================================================
-
 message:
-.db "Input kata :",0
+.db "Input kata :", 0
+
+array:
+.db 0
