@@ -65,8 +65,6 @@ Main:
 	
 
 forever:
-	;ldi A, $41
-	;rcall WRITE_TEXT
 	; PIND is listening to PORTD (Button)
 	sbic PIND, 2 ; skip next ins if bit 2 is 0
 	rjmp GANTI_HURUF ; bit 2 should be 1
@@ -133,13 +131,6 @@ BAWAH:
 	cbi PORTA, 0 ; CLR EN
 	rcall DELAY_01
 	ret
-
-SIMPAN_STACK:
-	;; simpan ke stack
-	;in XL, SPL
-	;in XH, SPH
-	;st X, A
-	;ret
 
 END_LCD:
 	rcall BAWAH ; ubah cursor ke bawah untuk input kata
@@ -358,112 +349,6 @@ end_interrupt:
 	pop temp2
 	pop temp
 
-	;dec counter
-	;breq MAU_UBAH_PATTERN
-	;rcall PILIH_KEDIP
-	;ldi r22, 0
-	;out TCNT0,r22
-	reti
-
-PILIH_KEDIP:
-	cpi pattern, 0b11111111
-	breq KEDIP8
-	cpi pattern, 0b01111111
-	breq KEDIP7
-	cpi pattern, 0b00111111
-	breq KEDIP6
-	cpi pattern, 0b00011111
-	breq KEDIP5
-	cpi pattern, 0b00001111
-	breq KEDIP4
-	cpi pattern, 0b00000111
-	breq KEDIP3
-	cpi pattern, 0b00000011
-	breq KEDIP2
-	cpi pattern, 0b00000001
-	breq KEDIP1
-	ret
-
-KEDIP8:
-	ldi r16, 0b01111111
-	out PORTC, r16
-	rcall DELAY_00
-	out PORTC, pattern
-	rcall DELAY_00
-	ret
-
-KEDIP7:
-	ldi r16, 0b00111111
-	out PORTC, r16
-	rcall DELAY_00
-	out PORTC, pattern
-	rcall DELAY_00
-	ret
-
-KEDIP6:
-	ldi r16, 0b00011111
-	out PORTC, r16
-	rcall DELAY_00
-	out PORTC, pattern
-	rcall DELAY_00
-	ret
-
-KEDIP5:
-	ldi r16, 0b00001111
-	out PORTC, r16
-	rcall DELAY_00
-	out PORTC, pattern
-	rcall DELAY_00
-	ret
-
-KEDIP4:
-	ldi r16, 0b00000111
-	out PORTC, r16
-	rcall DELAY_00
-	out PORTC, pattern
-	rcall DELAY_00
-	ret
-
-MAU_UBAH_PATTERN:
-	rjmp UBAH_PATTERN
-
-KEDIP3:
-	ldi r16, 0b00000011
-	out PORTC, r16
-	rcall DELAY_00
-	out PORTC, pattern
-	rcall DELAY_00
-	ret
-
-KEDIP2:
-	ldi r16, 0b00000001
-	out PORTC, r16
-	rcall DELAY_00
-	out PORTC, pattern
-	rcall DELAY_00
-	ret
-
-KEDIP1:
-	ldi r16, 0b00000000
-	out PORTC, r16
-	rcall DELAY_00
-	out PORTC, pattern
-	rcall DELAY_00
-	ret
-
-UBAH_PATTERN:
-	;ldi counter, 8
-	push r16
-	in r16,SREG
-	push r16
-	lsr pattern		; ubah pattern
-	mov r16, pattern
-	out PORTC, r16
-	rcall DELAY_00
-	pop r16
-	out SREG,r16
-	pop r16
-	out TCNT0,r22
 	reti
 
 DELAY_01:
