@@ -8,7 +8,7 @@
 ; DEFINITIONS
 ;====================================================================
 .def current_word = r1 ; buat nanti di get dari array untuk shift dll
-.def adressarray = r2 ; simpan index untuk array
+.def two_minutes_counter = r2 ; simpan index untuk array
 .def temp = r16 ; temporary register
 .def temp2 = r17 ;temp2
 .def stack = r21 ; stack
@@ -38,8 +38,13 @@ INIT_STACK:
 	out	SPH,stack
 
 Main:
+	;set variables
 	ldi current_ddram, $C0
 	ldi banyak_input, $0
+	ldi temp, 6
+	add two_minutes_counter, temp
+
+	;Init I/O
 	rcall INIT
 	rcall INPUT_TEXT
 	ldi A, $41 ; inisiasi input nya pertama adalah huruf A
@@ -74,8 +79,15 @@ forever:
 
 	sbic PIND, 5 ; skip next ins if bit 5 is 0
 	rjmp SHIFT_KIRI ; bit 5 should be 1
+
+	tst two_minutes_counter
+	breq end_program
 	
 	rjmp forever
+
+end_program:
+	rjmp CLEAR_LCD
+	rjmp end_program
 
 INIT:
 	rcall INIT_LED
@@ -163,7 +175,7 @@ INIT_LCD:
 	rcall DELAY_01
 	;;Display ON/OFF control
 	cbi PORTA,1 ; CLR RS
-	ldi PB,$0F ; MOV DATA,0x0F --> disp ON, cursor ON, blink ON
+	ldi PB,$0D ; MOV DATA,0x0F --> disp ON, cursor OFF, blink ON
 	out PORTB,PB
 	sbi PORTA,0 ; SETB EN
 	cbi PORTA,0 ; CLR EN
@@ -335,6 +347,9 @@ lanjut_interrupt:
 	brne end_interrupt
 
 	; kalo udah nol maka ganti led dan update ulang nilai seconds passed
+	ldi temp, 1
+	sub two_minutes_counter, temp
+
 	ldi seconds_passed, twenty_seconds
 	lsr pattern
 	out PORTC, pattern
