@@ -188,14 +188,35 @@ LOAD_ADDRESS_ARRAY:
 	ret
 
 SHIFT_KIRI:
-	rcall LOAD_ADDRESS_ARRAY
-	loop:
-		ld temp, Y
-		
-	ldi A, $42
-	rcall WRITE_TEXT
+	ldi current_ddram, $C0
+	mov PB, current_ddram
+	cbi PORTA, 1
+	out PORTB, PB 	;set address dram to second row first index
+	sbi PORTA, 0
+	cbi PORTA, 0
 
-	rcall DELAY_01
+	rcall LOAD_ADDRESS_ARRAY	;load Y address
+	ldi temp2, $0	;counter
+
+	loop_kiri:
+		cp temp2, banyak_input	;check if counter = banyakinput
+		breq loop_kiri_beres	;if yes, then break loop
+		ld temp, Y				;load char from memory
+		subi temp, 1			;decrement char ascii
+		mov A, temp
+
+		cpi A, $40	;check if char is @
+		brne LANJUT_LOOP_KIRI
+		ldi A, $5A ; if @, then set to Z
+
+		LANJUT_LOOP_KIRI:
+		rcall WRITE_TEXT
+		st Y+, A	;store back char to memory
+		subi temp2, -1	;increment counter
+		subi current_ddram, -1	;increment ddram address
+		rjmp loop_kiri
+	
+	loop_kiri_beres:
 	rjmp forever
 
 SHIFT_KANAN:
@@ -207,8 +228,11 @@ SHIFT_KANAN:
 	cbi PORTA, 0 ; CLR EN
 
 	rcall LOAD_ADDRESS_ARRAY
-	ldi temp2, 1
+	ldi temp2, $0
+
 	loop_kanan:
+		cp temp2, banyak_input	;cek udh berapa char yang ke shift
+		breq loop_kanan_beres
 		ld temp, Y		;load the char
 		subi temp, -1	;add ascii
 		mov A, temp		;prepare to write to LCD
@@ -223,8 +247,6 @@ SHIFT_KANAN:
 		subi temp2, -1
 		
 		subi current_ddram, -1	
-		cp temp2, banyak_input	;cek udh berapa char yang ke shift
-		breq loop_kanan_beres
 		rjmp loop_kanan
 
 	loop_kanan_beres:
@@ -258,7 +280,7 @@ LOLOS:
 LANJUT:
 	mov A, current_word
 	st Y+, A		;Post increment store current char to memory
-	subi banyak_input, -1
+	;subi banyak_input, -1
 
 	;set next char
 	ldi A, $41
@@ -450,4 +472,4 @@ message:
 .db "Input kata :", 0
 
 array:
-.db 0
+
