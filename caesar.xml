@@ -112,7 +112,7 @@
          </Config>
          <Config index="2">
             <Color>Green</Color>
-            <Name>120</Name>
+            <Name>180</Name>
             <PortPin>
                <Port>PORTC</Port>
                <Bit>5</Bit>
@@ -121,7 +121,7 @@
          </Config>
          <Config index="3">
             <Color>Yellow</Color>
-            <Name>100</Name>
+            <Name>150</Name>
             <PortPin>
                <Port>PORTC</Port>
                <Bit>4</Bit>
@@ -130,7 +130,7 @@
          </Config>
          <Config index="4">
             <Color>Yellow</Color>
-            <Name>80</Name>
+            <Name>120</Name>
             <PortPin>
                <Port>PORTC</Port>
                <Bit>3</Bit>
@@ -139,7 +139,7 @@
          </Config>
          <Config index="5">
             <Color>Yellow</Color>
-            <Name>60</Name>
+            <Name>90</Name>
             <PortPin>
                <Port>PORTC</Port>
                <Bit>2</Bit>
@@ -148,7 +148,7 @@
          </Config>
          <Config index="6">
             <Color>Red</Color>
-            <Name>40</Name>
+            <Name>60</Name>
             <PortPin>
                <Port>PORTC</Port>
                <Bit>1</Bit>
@@ -157,7 +157,7 @@
          </Config>
          <Config index="7">
             <Color>Red</Color>
-            <Name>20</Name>
+            <Name>30</Name>
             <PortPin>
                <Port>PORTC</Port>
                <Bit>0</Bit>
