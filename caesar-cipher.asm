@@ -16,16 +16,17 @@
 .def banyak_input = r23
 .def PB = r24 ; for PORTB
 .def A  = r25 ; kalo mau nge print
-.def counter = r20
+.def seconds_passed = r20
 .def pattern = r26
+.equ twenty_seconds = 110
 
 ;====================================================================
 ; RESET and INTERRUPT VECTORS
 ;====================================================================
 .org $00
 	rjmp INIT_STACK
-.org $07
-	rjmp ISR_TOV0
+.org $06
+	rjmp ov_int
 
 ;====================================================================
 ; CODE SEGMENT
@@ -52,6 +53,8 @@ Main:
 	out PORTB, PB
 	sbi PORTA, 0 ; SETB EN
 	cbi PORTA, 0 ; CLR EN
+
+	ldi seconds_passed, twenty_seconds
 	
 	rcall LOAD_ADDRESS_ARRAY
 	
@@ -131,21 +134,23 @@ END_LCD:
 	ret
 
 INIT_TIMER:
-	ldi counter, 8
-	ldi pattern, 0b11111111
-	ldi r16, (1<<CS10)||(1<<CS12) 
+	;ldi counter, 6
+	ldi pattern, 0b00111111
+
+	ldi r16, (1<<CS10)
 	out TCCR1B,r16			
 	ldi r16,1<<TOV1
 	out TIFR,r16		; Interrupt if overflow occurs in T/C0
 	ldi r16,1<<TOIE1
 	out TIMSK,r16		; Enable Timer/Counter0 Overflow int
-	ldi r16, 0b11111111
+
+	ldi r16, 0b00111111
 	out DDRC,r16		; Set port C as output
 	ldi r16, 0
 	out PORTC, r16
 	mov r16, pattern
 	out PORTC, r16
-	;sei
+	sei
 	ret
 
 INIT_LCD:
@@ -314,12 +319,35 @@ WRITE_TEXT:
 	rcall DELAY_01
 	ret
 
-ISR_TOV0:
-	dec counter
-	breq MAU_UBAH_PATTERN
-	rcall PILIH_KEDIP
-	ldi r22, 0
-	out TCNT0,r22
+ov_int:
+	;test masih 0 apa ga, brarti belum di setting
+	tst seconds_passed
+	brne lanjut_interrupt
+	reti
+
+lanjut_interrupt:
+	;siapa tau nilai penting
+	push temp
+	push temp2
+
+	subi seconds_passed, 1
+	tst seconds_passed ;test kalo 0 apa ga
+	brne end_interrupt
+
+	; kalo udah nol maka ganti led dan update ulang nilai seconds passed
+	ldi seconds_passed, twenty_seconds
+	lsr pattern
+	out PORTC, pattern
+
+end_interrupt:
+	pop temp2
+	pop temp
+
+	;dec counter
+	;breq MAU_UBAH_PATTERN
+	;rcall PILIH_KEDIP
+	;ldi r22, 0
+	;out TCNT0,r22
 	reti
 
 PILIH_KEDIP:
@@ -409,7 +437,7 @@ KEDIP1:
 	ret
 
 UBAH_PATTERN:
-	ldi counter, 8
+	;ldi counter, 8
 	push r16
 	in r16,SREG
 	push r16
